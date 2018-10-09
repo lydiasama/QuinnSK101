@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "building": {
+      ".read": "auth != null",
+      ".write": false
+    }
+  }
+}
