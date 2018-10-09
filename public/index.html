@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuinnSk-101</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-database.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-firestore.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-messaging.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-functions.js"></script> -->
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBcL4X6OlhTjvgsjRrDQDOJwCZzJ0S52qA",
+            authDomain: "quinnsk-101.firebaseapp.com",
+            databaseURL: "https://quinnsk-101.firebaseio.com",
+            projectId: "quinnsk-101",
+            storageBucket: "quinnsk-101.appspot.com",
+            messagingSenderId: "221928841486"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript" src="js/index.js"></script>
+</head>
+
+<body>
+    <button onclick="javascript:sayHello()">Hello</button>
+</body>
+
+</html>
