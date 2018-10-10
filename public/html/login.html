@@ -16,9 +16,6 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-database.js"></script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-firestore.js"></script> -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-messaging.js"></script> -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-functions.js"></script> -->
     <script>
         // Initialize Firebase
         var config = {
@@ -48,13 +45,13 @@
                         <form>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-large" type="email" placeholder="Your Email" autofocus="">
+                                    <input id="email" class="input is-large" type="email" placeholder="Your Email" autofocus="">
                                 </div>
                             </div>
 
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-large" type="password" placeholder="Your Password">
+                                    <input id="password" class="input is-large" type="password" placeholder="Your Password">
                                 </div>
                             </div>
                             <div class="field">
@@ -63,7 +60,7 @@
                                     Remember me
                                 </label>
                             </div>
-                            <button class="button is-block is-info is-large is-fullwidth">Login</button>
+                            <button class="button is-block is-info is-large is-fullwidth" id="loginBtn">Login</button>
                         </form>
                     </div>
                     <p class="has-text-grey">
