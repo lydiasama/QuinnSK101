@@ -1,0 +1,171 @@
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Css Ninja - Log in</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="title" content="">
+    <meta name="author" content="CssNinja">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="CssNinja">
+    <link rel="icon" type="image/png" href="https://cssninja.io/themes/cssninja/assets/images/logo/cssninja-icon.png">
+    <link href="https://cssninja.io/themes/cssninja/assets/css/bulma.css" rel="stylesheet">
+    <link href="https://cssninja.io/themes/cssninja/assets/css/core_ninja.css" rel="stylesheet">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Lato:300,400,700'>
+    <link href="https://cssninja.io/themes/cssninja/assets/css/icons.min.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+    <!-- Pageloader -->
+    <div class="pageloader"></div>
+    <div class="infraloader is-active"></div>
+
+    <!-- Wrapper -->
+    <div class="login-wrapper columns is-gapless">
+
+        <!-- Form section -->
+        <div class="column is-7">
+            <div class="hero is-fullheight">
+                <div class="hero-heading">
+                    <!-- Logo -->
+                    <div class="section has-text-centered">
+                        <a href="https://cssninja.io"><img class="top-logo" src="https://cssninja.io/themes/cssninja/assets/images/logo/cssninja-grayscale.svg"
+                                alt="Brand"></a>
+                    </div>
+                    <!-- Don't have an account yet -->
+                    <div class="no-account-link has-text-centered">
+                        <a href="https://cssninja.io/register">Don't have an account ? </a>
+                    </div>
+                </div>
+                <div class="hero-body">
+                    <div class="container">
+                        <div class="columns">
+                            <div class="column"></div>
+                            <div class="column is-5">
+                                <!-- Custom login -->
+
+                                <form data-request="onSignin">
+                                    <div id="signin-form" class="login-form animated preFadeInLeft fadeInLeft">
+                                        <!-- Input -->
+                                        <div class="field pb-10">
+                                            <div class="control">
+                                                <input id="userSigninLogin" class="input is-large" type="text" name="login"
+                                                    placeholder="Enter your email" required>
+                                            </div>
+                                        </div>
+                                        <!-- Input -->
+                                        <div class="field pb-20">
+                                            <div class="control">
+                                                <input id="userSigninPassword" class="input is-large" type="password"
+                                                    name="password" placeholder="Enter your password" required>
+                                            </div>
+                                        </div>
+                                        <!-- Submit -->
+                                        <p class="control login">
+                                            <button type="submit" class="button button-cta primary-btn btn-align-lg btn-outlined is-bold is-fullwidth rounded raised no-lh  will-load">
+                                                Log in
+                                            </button>
+                                        </p>
+                                    </div>
+                                </form>
+                                <!-- /Custom login -->
+
+                                <!-- Custom Reset Form -->
+                                <div id="partialUserResetForm">
+                                    <!-- Reset Form -->
+                                    <form data-request="ninjaReset::onRestorePassword" data-request-update="'ninjaReset::reset': '#partialUserResetForm'">
+                                        <div id="recover-form" class="login-form animated preFadeInLeft fadeInLeft is-hidden">
+                                            <h2 class="title is-4 has-text-centered">Lost your Password ?</h2>
+                                            <!-- Input -->
+                                            <div class="field pb-20">
+                                                <div class="control">
+                                                    <input id="userRestoreEmail" class="input is-large" type="email"
+                                                        name="email" placeholder="Enter your email" required>
+                                                </div>
+                                            </div>
+                                            <!-- Submit -->
+                                            <p class="control login">
+                                                <button type="submit" class="button button-cta secondary-btn btn-align-lg btn-outlined is-bold is-fullwidth rounded raised no-lh will-load">
+                                                    Restore password
+                                                </button>
+                                            </p>
+                                        </div>
+                                    </form>
+                                    <!-- /Reset Form -->
+                                </div> <!-- /Custom Reset Form -->
+
+                                <!-- Toggles -->
+                                <div id="recover" class="section forgot-password animated preFadeInLeft fadeInLeft">
+                                    <p class="has-text-centered">
+                                        <a href="#">Forgot password ?</a>
+                                    </p>
+                                </div>
+
+                                <div id="back-to-login" class="section forgot-password animated preFadeInLeft fadeInLeft is-hidden">
+                                    <p class="has-text-centered">
+                                        <a href="#">Back to Sign in</a>
+                                    </p>
+                                </div>
+                                <!-- /Toggles -->
+                            </div>
+                            <div class="column"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Form section -->
+
+        <!-- Image section (hidden on mobile) -->
+        <div class="column login-column is-5 is-hidden-mobile hero-banner">
+            <div class="hero is-fullheight is-theme-primary is-relative">
+                <div class="columns has-text-centered">
+                    <div class="column">
+                        <h2 class="title is-2 light-text">
+                            Start designing now
+                        </h2>
+                        <h3 class="subtitle is-5 light-text">
+                            Become one of our loyal cutomers and get access to ressources, tutorials, and of course
+                            customer support.
+                        </h3>
+                        <div class="mt-30 has-text-centered">
+                            <a href="https://cssninja.io/register" class="button button-cta btn-outlined is-bold light-btn rounded">Register
+                                now</a>
+                        </div>
+                    </div>
+                </div>
+                <img class="login-city" src="https://cssninja.io/themes/cssninja/assets/images/bg/temple.svg" alt="">
+            </div>
+        </div>
+        <!-- /Image section -->
+    </div>
+    <!-- /Wrapper -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-112735660-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <!-- Scripts -->
+    <script src="https://cssninja.io/themes/cssninja/assets/js/core/jquery.min.js"></script>
+    <script src="https://cssninja.io/themes/cssninja/assets/js/core/modernizr.min.js"></script>
+
+    <script src="https://cssninja.io/themes/cssninja/assets/js/main.js"></script>
+
+    <script src="https://cssninja.io/themes/cssninja/assets/js/pages/auth.js"></script>
+    <script src="/modules/system/assets/js/framework.js"></script>
+    <script src="/modules/system/assets/js/framework.extras.js"></script>
+    <link rel="stylesheet" property="stylesheet" href="/modules/system/assets/css/framework.extras.css">
+</body>
+
+</html>

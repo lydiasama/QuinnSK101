@@ -1,1 +1,8 @@
-.firebase
+.firebase/*
+*.log
+firestore.indexes.json
+firestore.rules
+**/functions
+storage.rules
+.firebase/hosting.cHVibGlj.cache
+public/theam/*
