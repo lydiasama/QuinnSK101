@@ -1,4 +1,5 @@
 .firebase/*
+<<<<<<< HEAD
 *.log
 firestore.indexes.json
 firestore.rules
@@ -6,3 +7,5 @@ firestore.rules
 storage.rules
 .firebase/hosting.cHVibGlj.cache
 public/theam/*
+=======
+>>>>>>> 51db0ee1fddc8f36f87e21c669bd9445465dcd1a
