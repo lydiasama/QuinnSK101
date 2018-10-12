@@ -3,5 +3,5 @@ function signIn() {
 }
 
 function signUp() {
-    window.location = "html/email-link.html";
+    // window.location = "html/email-link.html";
 }
