@@ -3,6 +3,18 @@
     "building": {
       ".read": true,
       ".write": false
+    },
+    "matrix_log":{
+      ".read": false,
+      ".write": true
+    },
+    "users": {
+      ".read": "auth.uid != null",
+      ".write": "auth.uid != null"
+    },
+    "users_log": {
+      ".read": "false",
+      ".write": "auth.uid != null"
     }
   }
 }
