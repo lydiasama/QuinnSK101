@@ -6,15 +6,17 @@
     },
     "matrix-log": {
       ".read": "auth.uid == 'pCjAMnXBWYeUnbXgHE5gYVjoUcW2'",
-      ".write": "auth.uid != null"
+      ".write": "auth.uid != null",
+      ".indexOn": ["uid", "name"]
     },
     "users": {
-      ".read": true,
+      ".read": "auth.uid != null",
       ".write": true
     },
     "login-log": {
       ".read": "auth.uid == 'pCjAMnXBWYeUnbXgHE5gYVjoUcW2'",
-      ".write": "auth.uid != null"
+      ".write": "auth.uid != null",
+      ".indexOn": ["uid", "name"]
     }
   }
 }
