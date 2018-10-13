@@ -5,7 +5,7 @@
       ".write": "auth.uid != null"
     },
     "matrix-log": {
-      ".read": "auth.uid == 'pCjAMnXBWYeUnbXgHE5gYVjoUcW2'",
+      ".read": "root.child('users').child(auth.uid).child('group').val() === 'admin'",
       ".write": "auth.uid != null",
       ".indexOn": ["uid", "name"]
     },
@@ -14,7 +14,7 @@
       ".write": true
     },
     "login-log": {
-      ".read": "auth.uid == 'pCjAMnXBWYeUnbXgHE5gYVjoUcW2'",
+      ".read": "root.child('users').child(auth.uid).child('group').val() === 'admin'",
       ".write": "auth.uid != null",
       ".indexOn": ["uid", "name"]
     }
