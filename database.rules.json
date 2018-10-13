@@ -2,11 +2,11 @@
   "rules": {
     "building": {
       ".read": true,
-      ".write": false
+      ".write": "auth.uid != null"
     },
     "matrix_log":{
       ".read": false,
-      ".write": true
+      ".write": "auth.uid != null"
     },
     "users": {
       ".read": "auth.uid != null",
