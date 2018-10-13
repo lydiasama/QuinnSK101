@@ -438,6 +438,7 @@ var UserService = /** @class */ (function () {
         this.dbPath = '/building';
         this.matrixData = null;
         this.matrixData = db.list(this.dbPath);
+        this.userDataRef = db.object('users');
     }
     UserService.prototype.getCurrentUser = function () {
         return new Promise(function (resolve, reject) {
@@ -464,6 +465,25 @@ var UserService = /** @class */ (function () {
     };
     UserService.prototype.getAllData = function () {
         return this.matrixData;
+    };
+    UserService.prototype.saveUser = function (name) {
+        return new Promise(function (resolve, reject) {
+            var permissionDefault = 0;
+            var groupDefault = "viewer";
+            var uid = firebase_app__WEBPACK_IMPORTED_MODULE_4__["auth"]().currentUser.uid;
+            var user = firebase_app__WEBPACK_IMPORTED_MODULE_4__["database"]().ref('users/' + uid).set({
+                group: groupDefault,
+                name: name,
+                permission: permissionDefault
+            });
+        });
+    };
+    UserService.prototype.logUser = function () {
+        var ref = firebase_app__WEBPACK_IMPORTED_MODULE_4__["database"]().ref("login-log");
+        ref.set({ name: "Ada", age: 36 })
+            .then(function () {
+            return ref.once("value");
+        });
     };
     UserService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -752,7 +772,7 @@ module.exports = ".margin-register {\r\n  margin-top: 100px;\r\n}\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container margin-register\">\r\n  <h2 class=\"text-center\">Register</h2>\r\n  <h4 class=\"text-center\">Please enter your email and password to proceed.</h4>\r\n  <div class=\"row mt-5\">\r\n    <div class=\"col-6 offset-3\">\r\n      <div class=\"card\">\r\n        <div class=\"card-body\">\r\n          <form [formGroup]=\"registerForm\">\r\n            <div class=\"form-group\">\r\n              <input type=\"email\" formControlName=\"email\" class=\"form-control form-control-lg\" placeholder=\"Your Email\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <input type=\"password\" formControlName=\"password\" class=\"form-control form-control-lg\" placeholder=\"Your Password\">\r\n              <label class=\"error\">{{errorMessage}}</label>\r\n              <label class=\"success\">{{successMessage}}</label>\r\n            </div>\r\n            <button type=\"submit\" (click)=\"tryRegister(registerForm.value)\" class=\"btn btn-primary btn-lg btn-block\">Register</button>\r\n          </form>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"container margin-register\">\r\n  <h2 class=\"text-center\">Register</h2>\r\n  <h4 class=\"text-center\">Please enter your email and password to proceed.</h4>\r\n  <div class=\"row mt-5\">\r\n    <div class=\"col-6 offset-3\">\r\n      <div class=\"card\">\r\n        <div class=\"card-body\">\r\n          <form [formGroup]=\"registerForm\">\r\n            <div class=\"form-group\">\r\n              <input type=\"text\" formControlName=\"name\" class=\"form-control form-control-lg\" placeholder=\"Your Name\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <input type=\"email\" formControlName=\"email\" class=\"form-control form-control-lg\" placeholder=\"Your Email\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <input type=\"password\" formControlName=\"password\" class=\"form-control form-control-lg\" placeholder=\"Your Password\">\r\n              <label class=\"error\">{{errorMessage}}</label>\r\n              <label class=\"success\">{{successMessage}}</label>\r\n            </div>\r\n            <button type=\"submit\" (click)=\"tryRegister(registerForm.value)\" class=\"btn btn-primary btn-lg btn-block\">Register</button>\r\n          </form>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -770,6 +790,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _core_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/auth.service */ "./src/app/core/auth.service.ts");
+/* harmony import */ var _core_user_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../core/user.service */ "./src/app/core/user.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -783,9 +804,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var RegisterComponent = /** @class */ (function () {
-    function RegisterComponent(authService, router, fb) {
+    function RegisterComponent(authService, userService, router, fb) {
         this.authService = authService;
+        this.userService = userService;
         this.router = router;
         this.fb = fb;
         this.errorMessage = '';
@@ -796,6 +819,7 @@ var RegisterComponent = /** @class */ (function () {
     };
     RegisterComponent.prototype.createForm = function () {
         this.registerForm = this.fb.group({
+            name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             password: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]
         });
@@ -805,8 +829,21 @@ var RegisterComponent = /** @class */ (function () {
         this.authService.doRegister(value)
             .then(function (res) {
             console.log(res);
+            _this.trySaveUser(value.name);
             _this.errorMessage = "";
             _this.successMessage = "Your account has been created";
+        }, function (err) {
+            console.log(err);
+            _this.errorMessage = err.message;
+            _this.successMessage = "";
+        });
+    };
+    RegisterComponent.prototype.trySaveUser = function (name) {
+        var _this = this;
+        this.userService.saveUser(name)
+            .then(function (res) {
+            console.log(res);
+            _this.errorMessage = "";
         }, function (err) {
             console.log(err);
             _this.errorMessage = err.message;
@@ -820,6 +857,7 @@ var RegisterComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./register.component.css */ "./src/app/register/register.component.css")]
         }),
         __metadata("design:paramtypes", [_core_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"],
+            _core_user_service__WEBPACK_IMPORTED_MODULE_4__["UserService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"]])
     ], RegisterComponent);
