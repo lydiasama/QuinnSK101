@@ -810,7 +810,7 @@ var UserService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".margin-login {\r\n  margin-top: 100px;\r\n}\r\n"
+module.exports = ".login-page {\r\n  background-image: url('bg-quinn.jpg');\r\n  background-repeat: no-repeat;\r\n  background-position: center;\r\n  background-size: cover;\r\n  height: 100vh;\r\n}\r\n\r\n.background-tint {\r\n  background-color: rgba(86, 67, 57,0.7);\r\n  background-blend-mode: multiply;\r\n}\r\n\r\n.padding-login {\r\n  padding-top: 100px;\r\n}\r\n\r\n.card {\r\n  background-color: #382F2D;\r\n  color: white;\r\n  border: 1px solid #E1B77E;\r\n  outline: 15px solid #382F2D;\r\n}\r\n\r\ninput {\r\n  background-color: #382F2D;\r\n  color: white;\r\n  border: 1px solid #E1B77E;\r\n}\r\n\r\n::-webkit-input-placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */\r\n  color: white;\r\n  opacity: 1; /* Firefox */\r\n}\r\n\r\n::-ms-input-placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */\r\n  color: white;\r\n  opacity: 1; /* Firefox */\r\n}\r\n\r\n::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */\r\n  color: white;\r\n  opacity: 1; /* Firefox */\r\n}\r\n\r\n:-ms-input-placeholder { /* Internet Explorer 10-11 */\r\n  color: white;\r\n}\r\n\r\n::-ms-input-placeholder { /* Microsoft Edge */\r\n  color: white;\r\n}\r\n\r\nbutton {\r\n  background-color: rgba(225,183,126,0.5);\r\n  border: 4px solid #E1B77E;\r\n  border-radius: 15px;\r\n}\r\n\r\nbutton:hover {\r\n  background-color: #E1B77E;\r\n  color: white;\r\n  border: 4px solid white;\r\n  border-radius: 15px;\r\n}\r\n\r\na {\r\n  color: #E1B77E;\r\n}\r\n\r\na:hover {\r\n  color: #E1B77E;\r\n}"
 
 /***/ }),
 
@@ -821,7 +821,7 @@ module.exports = ".margin-login {\r\n  margin-top: 100px;\r\n}\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container margin-login\">\r\n  <h2 class=\"text-center\">Login</h2>\r\n  <h4 class=\"text-center\">Please login to proceed.</h4>\r\n  <div class=\"row mt-5\">\r\n    <div class=\"col-6 offset-3\">\r\n      <div class=\"card\">\r\n        <div class=\"card-body\">\r\n          <form [formGroup]=\"loginForm\">\r\n            <div class=\"form-group\">\r\n              <input type=\"email\" formControlName=\"email\" class=\"form-control form-control-lg\" placeholder=\"Your Email\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <input type=\"password\" formControlName=\"password\" class=\"form-control form-control-lg\" placeholder=\"Your Password\">\r\n              <label class=\"error\">{{errorMessage}}</label>\r\n            </div>\r\n            <div class=\"form-group form-check text-center\">\r\n              <input type=\"checkbox\" class=\"form-check-input\" id=\"remember\">\r\n              <label class=\"form-check-label\" for=\"remember\">Remember me</label>\r\n            </div>\r\n            <button type=\"submit\" (click)=\"tryLogin(loginForm.value)\" class=\"btn btn-primary btn-lg btn-block\">Login</button>\r\n          </form>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row mt-4\">\r\n    <div class=\"col-12 text-center\">\r\n      <p>No account yet? <a href=\"/register\">Create an account</a></p>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"login-page background-tint\">\r\n  <div class=\"padding-login\">\r\n    <div class=\"row mt-5 ml-0 mr-0\">\r\n      <div class=\"col-6 offset-3\">\r\n        <div class=\"card\">\r\n          <h2 class=\"text-center mt-4\">Login</h2>\r\n          <h4 class=\"text-center\">Please login to proceed.</h4>\r\n          <div class=\"card-body\">\r\n            <form [formGroup]=\"loginForm\">\r\n              <div class=\"form-group\">\r\n                <input type=\"email\" formControlName=\"email\" class=\"form-control form-control-lg\" placeholder=\"Your Email\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <input type=\"password\" formControlName=\"password\" class=\"form-control form-control-lg\" placeholder=\"Your Password\">\r\n                <label class=\"error\">{{errorMessage}}</label>\r\n              </div>\r\n              <div class=\"form-group form-check text-center\">\r\n                <input type=\"checkbox\" class=\"form-check-input\" id=\"remember\">\r\n                <label class=\"form-check-label\" for=\"remember\">Remember me</label>\r\n              </div>\r\n              <button type=\"submit\" (click)=\"tryLogin(loginForm.value)\" class=\"btn btn-primary btn-lg btn-block\">Login</button>\r\n            </form>\r\n            <div class=\"row mt-4 ml-0 mr-0\">\r\n              <div class=\"col-12 text-center\">\r\n                <p>No account yet? <a href=\"/register\">Create an account</a></p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -889,7 +889,7 @@ var LoginComponent = /** @class */ (function () {
             .then(function (res) {
             _this.tryLogUser(uid, res);
         }, function (err) {
-            console.log(_this.errorMessage);
+            console.log(err);
         });
     };
     LoginComponent.prototype.tryLogUser = function (uid, name) {
@@ -925,7 +925,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 50px\r\n}\r\n\r\n.room-md {\r\n  width: 110px;\r\n  height: 60px;\r\n  padding: 10px;\r\n}\r\n\r\n.room-lg {\r\n  width: 220px;\r\n  height: 120px;\r\n  padding: 10px;\r\n}\r\n"
+module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 60px\r\n}\r\n\r\n.room-md {\r\n  width: 110px;\r\n  height: 60px;\r\n  padding: 10px;\r\n}\r\n\r\n.room-lg {\r\n  width: 220px;\r\n  height: 120px;\r\n  padding: 10px;\r\n}\r\n\r\n.no-border {\r\n  border: 0px;\r\n}\r\n\r\n.reserved {\r\n  background-color: #ffc107;\r\n}\r\n"
 
 /***/ }),
 
@@ -936,7 +936,7 @@ module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 50px\r\n}\r\n\r\n.ro
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"display-1\">main works!</h1>\r\n<button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">Logout</button>\r\n<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <table class=\"table-bordered table-responsive\" *ngIf=\"matrixData\" style=\"width:990px; overflow: auto\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngFor=\"let matrix of matrixData[floor.name]\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', 'room-lg':  matrix['room-detail'].merge ==='xy'}\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<h1 class=\"display-1\">main works!</h1>\r\n<button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">Logout</button>\r\n<div class=\"row\">\r\n  <div class=\"col-6 table-responsive\">\r\n    <table class=\"table-bordered table-responsive\" *ngIf=\"matrixData1\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-sm no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngFor=\"let matrix of matrixData1[floor.name]\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', 'room-lg':  matrix['room-detail'].merge ==='xy', 'reserved': matrix.status === 'reserved'}\"\r\n            (click)=\"toggleReserveA(matrix['room-detail'].room, floor.name)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n  <div class=\"col-6 table-responsive\">\r\n    <table class=\"table-bordered table-responsive\" *ngIf=\"matrixData2\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-sm no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngIf=\"floor.floor > 24\" colspan=\"6\" class=\"no-border\"></td>\r\n          <td *ngFor=\"let matrix of matrixData2[floor.name]\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', 'room-lg':  matrix['room-detail'].merge ==='xy', 'reserved': matrix.status === 'reserved'}\"\r\n            (click)=\"toggleReserveB(matrix['room-detail'].room, floor.name)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -985,92 +985,117 @@ var MainComponent = /** @class */ (function () {
         this.buildA = [
             {
                 name: 'floor-31',
+                floor: 31
             },
             {
                 name: 'floor-30',
+                floor: 30
             },
             {
                 name: 'floor-29',
+                floor: 29
             },
             {
                 name: 'floor-28',
+                floor: 28
             },
             {
                 name: 'floor-27',
+                floor: 27
             },
             {
                 name: 'floor-26',
+                floor: 26
             },
             {
                 name: 'floor-25',
+                floor: 25
             },
             {
                 name: 'floor-24',
+                floor: 24
             },
             {
                 name: 'floor-23',
+                floor: 23
             },
             {
                 name: 'floor-22',
+                floor: 22
             },
             {
                 name: 'floor-21',
+                floor: 21
             },
             {
                 name: 'floor-20',
+                floor: 20
             },
             {
                 name: 'floor-19',
+                floor: 19
             },
             {
                 name: 'floor-18',
+                floor: 18
             },
             {
                 name: 'floor-17',
+                floor: 17
             },
             {
                 name: 'floor-16',
+                floor: 16
             },
             {
                 name: 'floor-15',
+                floor: 15
             },
             {
                 name: 'floor-14',
+                floor: 14
             },
             {
                 name: 'floor-13',
+                floor: 13
             },
             {
                 name: 'floor-12',
+                floor: 12
             },
             {
                 name: 'floor-11',
+                floor: 11
             },
             {
                 name: 'floor-10',
+                floor: 10
             },
             {
                 name: 'floor-09',
+                floor: 9
             },
             {
                 name: 'floor-08',
+                floor: 8
             },
             {
                 name: 'floor-07',
+                floor: 7
             },
         ];
     }
     MainComponent.prototype.ngOnInit = function () {
         this.getData();
-        console.log(this.buildA);
     };
     MainComponent.prototype.getData = function () {
         var _this = this;
         this.userService.getAllData().snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (changes) {
             return changes.map(function (c) { return (__assign({ key: c.payload.key }, c.payload.val())); });
         })).subscribe(function (res) {
-            _this.matrixData = res[0];
-            console.log(res[0]);
+            _this.matrixData1 = res[0];
+            _this.matrixData2 = res[1];
+            console.log(res[1]);
         });
     };
     MainComponent.prototype.logout = function () {
@@ -1083,10 +1108,7 @@ var MainComponent = /** @class */ (function () {
         });
     };
     MainComponent.prototype.calColspan = function (value) {
-        if (value === 'xy') {
-            return 2;
-        }
-        else if (value == 'x') {
+        if (value === 'xy' || value === 'x') {
             return 2;
         }
     };
@@ -1094,6 +1116,32 @@ var MainComponent = /** @class */ (function () {
         if (value === 'floor-31') {
             return 2;
         }
+    };
+    MainComponent.prototype.toggleReserveA = function (room, floor) {
+        this.matrixData1[floor].map(function (element) {
+            if (element['room-detail'].room === room) {
+                if (element.status === 'available') {
+                    element.status = 'reserved';
+                }
+                else {
+                    element.status = 'available';
+                }
+            }
+        });
+    };
+    MainComponent.prototype.toggleReserveB = function (room, floor) {
+        console.log(room, floor);
+        this.matrixData2[floor].map(function (element) {
+            if (element['room-detail'].room === room) {
+                if (element.status === 'available') {
+                    element.status = 'reserved';
+                }
+                else {
+                    element.status = 'available';
+                }
+            }
+        });
+        console.log(this.matrixData2[floor]);
     };
     MainComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
