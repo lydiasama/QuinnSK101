@@ -5,11 +5,7 @@
       ".write": "auth.uid != null"
     },
     "matrix-log": {
-      ".read": false,
-      ".write": "auth.uid != null"
-    },
-    "user-seq": {
-      ".read": "auth.uid != null",
+      ".read": "auth.uid == 'pCjAMnXBWYeUnbXgHE5gYVjoUcW2'",
       ".write": "auth.uid != null"
     },
     "users": {
@@ -17,7 +13,7 @@
       ".write": true
     },
     "login-log": {
-      ".read": "false",
+      ".read": "auth.uid == 'pCjAMnXBWYeUnbXgHE5gYVjoUcW2'",
       ".write": "auth.uid != null"
     }
   }
