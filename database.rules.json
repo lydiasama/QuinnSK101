@@ -4,15 +4,19 @@
       ".read": true,
       ".write": "auth.uid != null"
     },
-    "matrix_log":{
+    "matrix-log": {
       ".read": false,
       ".write": "auth.uid != null"
     },
-    "users": {
+    "user-seq": {
       ".read": "auth.uid != null",
       ".write": "auth.uid != null"
     },
-    "users_log": {
+    "users": {
+      ".read": true,
+      ".write": true
+    },
+    "login-log": {
       ".read": "false",
       ".write": "auth.uid != null"
     }
