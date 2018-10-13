@@ -475,7 +475,9 @@ var UserService = /** @class */ (function () {
                 group: groupDefault,
                 name: name,
                 permission: permissionDefault
-            });
+            }).then(function (res) {
+                resolve(res);
+            }, function (err) { return reject(err); });
         });
     };
     UserService.prototype.logUser = function () {
@@ -595,7 +597,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 50px\r\n}\r\n\r\n.room-md {\r\n  width: 110px;\r\n  height: 60px;\r\n  padding: 10px;\r\n}\r\n\r\n.room-lg {\r\n  width: 220px;\r\n  height: 120px;\r\n  padding: 10px;\r\n}\r\n"
 
 /***/ }),
 
@@ -606,7 +608,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"display-1\">main works!</h1>\r\n<button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">Logout</button>\r\n<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-12\">\r\n      <table class=\"table table-bordered\">\r\n        <tbody>\r\n          <tr *ngFor=\"let matrix of matrixData\">\r\n            <th scope=\"row\">{{matrix.key}}</th>\r\n            <td *ngIf=\"matrix.key === 'diagram-a'\">\r\n              {{matrix['floor-7'].A0701.floor}}\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<h1 class=\"display-1\">main works!</h1>\r\n<button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">Logout</button>\r\n<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <table class=\"table-bordered table-responsive\" *ngIf=\"matrixData\" style=\"width:990px; overflow: auto\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n          <td class=\"room-md\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngFor=\"let matrix of matrixData[floor.name]\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', 'room-lg':  matrix['room-detail'].merge ==='xy'}\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -652,17 +654,95 @@ var MainComponent = /** @class */ (function () {
         this.authService = authService;
         this.userService = userService;
         this.location = location;
+        this.buildA = [
+            {
+                name: 'floor-31',
+            },
+            {
+                name: 'floor-30',
+            },
+            {
+                name: 'floor-29',
+            },
+            {
+                name: 'floor-28',
+            },
+            {
+                name: 'floor-27',
+            },
+            {
+                name: 'floor-26',
+            },
+            {
+                name: 'floor-25',
+            },
+            {
+                name: 'floor-24',
+            },
+            {
+                name: 'floor-23',
+            },
+            {
+                name: 'floor-22',
+            },
+            {
+                name: 'floor-21',
+            },
+            {
+                name: 'floor-20',
+            },
+            {
+                name: 'floor-19',
+            },
+            {
+                name: 'floor-18',
+            },
+            {
+                name: 'floor-17',
+            },
+            {
+                name: 'floor-16',
+            },
+            {
+                name: 'floor-15',
+            },
+            {
+                name: 'floor-14',
+            },
+            {
+                name: 'floor-13',
+            },
+            {
+                name: 'floor-12',
+            },
+            {
+                name: 'floor-11',
+            },
+            {
+                name: 'floor-10',
+            },
+            {
+                name: 'floor-09',
+            },
+            {
+                name: 'floor-08',
+            },
+            {
+                name: 'floor-07',
+            },
+        ];
     }
     MainComponent.prototype.ngOnInit = function () {
         this.getData();
+        console.log(this.buildA);
     };
     MainComponent.prototype.getData = function () {
         var _this = this;
         this.userService.getAllData().snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (changes) {
             return changes.map(function (c) { return (__assign({ key: c.payload.key }, c.payload.val())); });
         })).subscribe(function (res) {
-            _this.matrixData = res;
-            console.log(res);
+            _this.matrixData = res[0];
+            console.log(res[0]);
         });
     };
     MainComponent.prototype.logout = function () {
@@ -673,6 +753,19 @@ var MainComponent = /** @class */ (function () {
         }, function (error) {
             console.log("Logout error", error);
         });
+    };
+    MainComponent.prototype.calColspan = function (value) {
+        if (value === 'xy') {
+            return 2;
+        }
+        else if (value == 'x') {
+            return 2;
+        }
+    };
+    MainComponent.prototype.calRowspan = function (value) {
+        if (value === 'floor-31') {
+            return 2;
+        }
     };
     MainComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -843,6 +936,7 @@ var RegisterComponent = /** @class */ (function () {
         this.userService.saveUser(name)
             .then(function (res) {
             console.log(res);
+            _this.router.navigate(['/main']);
             _this.errorMessage = "";
         }, function (err) {
             console.log(err);
@@ -962,7 +1056,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! F:\LydiaProject\QuinnSK-101\quinn-front-end\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! f:\LydiaProject\QuinnSK-101\quinn-front-end\src\main.ts */"./src/main.ts");
 
 
 /***/ })
