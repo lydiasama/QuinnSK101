@@ -2,7 +2,7 @@
   "rules": {
     "building": {
       ".read": "(auth.uid != null) && root.child('users').child(auth.uid).child('permission').val() > 0",
-      ".write": "auth.uid != null"
+      ".write": "(auth.uid != null) && root.child('users').child(auth.uid).child('permission').val() > 1"
     },
     "matrix-log": {
       ".read": "root.child('users').child(auth.uid).child('group').val() === 'admin'",
@@ -14,7 +14,7 @@
     },
     "users": {
       ".read": "auth.uid != null",
-      ".write": "auth.uid != null"
+      ".write": true
     },
     "login-log": {
       ".read": "root.child('users').child(auth.uid).child('group').val() === 'admin'",
