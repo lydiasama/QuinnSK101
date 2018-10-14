@@ -14,7 +14,7 @@
     },
     "users": {
       ".read": "auth.uid != null",
-      ".write": "root.child('users').child(auth.uid).child('group').val() === 'admin'"
+      ".write": true
     },
     "login-log": {
       ".read": "root.child('users').child(auth.uid).child('group').val() === 'admin'",
