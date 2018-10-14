@@ -853,7 +853,7 @@ var MatrixService = /** @class */ (function () {
                 status: action
             }).then(function (res) {
                 resolve(res);
-                _this.logMatrix(action, userModel.permission, userModel.username, userModel.uid);
+                _this.logMatrix(action, userModel.group, userModel.username, userModel.uid);
             }, function (err) {
                 reject(err);
             });
@@ -863,15 +863,15 @@ var MatrixService = /** @class */ (function () {
         var keyTime = moment__WEBPACK_IMPORTED_MODULE_5__().format('YYMMDD-hhmmss');
         return "QN" + keyTime;
     };
-    MatrixService.prototype.logMatrix = function (action, permission, username, uid) {
+    MatrixService.prototype.logMatrix = function (action, group, username, uid) {
         var _this = this;
-        console.log(action, permission, username, uid);
+        console.log(action, group, username, uid);
         return new Promise(function (resolve, reject) {
             var ref = firebase_app__WEBPACK_IMPORTED_MODULE_4__["database"]().ref('matrix-log/' + _this.generateTime());
             ref.set({
                 action: action,
                 created_date: moment__WEBPACK_IMPORTED_MODULE_5__().format('YYYY-MM-DD'),
-                group: permission,
+                group: group,
                 name: username,
                 uid: uid
             }).then(function (res) {
@@ -980,12 +980,14 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.getPermission = function (uid) {
+    UserService.prototype.getUserDetail = function (uid) {
         return new Promise(function (resolve, reject) {
             var user = firebase_app__WEBPACK_IMPORTED_MODULE_4__["database"]().ref('users/' + uid);
             user.once('value').then(function (res) {
+                var name = res.child('name').val();
                 var permission = res.child('permission').val();
-                resolve(permission);
+                var group = res.child('group').val();
+                resolve({ name: name, permission: permission, group: group });
             }, function (err) {
                 reject(err);
             });
@@ -1129,7 +1131,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 60px;\r\n  cursor: pointer;\r\n}\r\n\r\n.room-md {\r\n  width: 110px;\r\n  height: 60px;\r\n  padding: 10px;\r\n  cursor: pointer;\r\n}\r\n\r\n.room-lg {\r\n  width: 220px;\r\n  height: 120px;\r\n  padding: 10px;\r\n  cursor: pointer;\r\n}\r\n\r\n.no-border {\r\n  border: 0px;\r\n  cursor: default;\r\n}\r\n\r\n.reserved {\r\n  background-color: #ffc107;\r\n}\r\n\r\n.sold {\r\n  background-color: red;\r\n  color: white;\r\n}\r\n\r\n.not-available {\r\n  background-color: black;\r\n  color: white;\r\n}\r\n\r\n.total {\r\n  background-color: rgb(201, 196, 193);\r\n  border: 20px solid rgb(201, 196, 193);\r\n}"
+module.exports = "table {\r\n  font-size: 12px;\r\n}\r\n\r\n.room-sm {\r\n  width: 70px;\r\n  height: 60px;\r\n  cursor: pointer;\r\n}\r\n\r\n.room-md {\r\n  width: 110px;\r\n  height: 60px;\r\n  padding: 10px;\r\n  cursor: pointer;\r\n}\r\n\r\n.room-lg {\r\n  width: 220px;\r\n  height: 120px;\r\n  padding: 10px;\r\n  cursor: pointer;\r\n}\r\n\r\n.no-border {\r\n  border: 0px;\r\n  cursor: default;\r\n}\r\n\r\n.reserved {\r\n  background-color: #ffc107;\r\n}\r\n\r\n.sold {\r\n  background-color: red;\r\n  color: white;\r\n}\r\n\r\n.not-available {\r\n  background-color: black;\r\n  color: white;\r\n}\r\n\r\n.total {\r\n  margin: auto;\r\n  margin-top: 20%;\r\n  background-color: rgb(201, 196, 193);\r\n  border: 20px solid rgb(201, 196, 193);\r\n}\r\n\r\n.logo {\r\n  height: 30%;\r\n}\r\n\r\n.logo img {\r\n  max-width: 100%;\r\n  height: auto;\r\n}\r\n\r\ndiagram {\r\n  height: 30%;\r\n}\r\n\r\n.diagram img {\r\n  max-width: 100%;\r\n  height: auto;\r\n}\r\n\r\n.totalInfo {\r\n  zoom: 2;\r\n}\r\n\r\n.sum {\r\n  text-align: right;\r\n}\r\n\r\n.bold {\r\n  font-weight: bold;\r\n}\r\n"
 
 /***/ }),
 
@@ -1140,7 +1142,7 @@ module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 60px;\r\n  cursor: p
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"display-1\">main works!</h1>\r\n<a href=\"/admin\">Admin</a>\r\n<button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">Logout</button>\r\n\r\n<div class=\"row ml-0 mr-0\">\r\n  <div class=\"col-5 table-responsive buildingA pl-0\">\r\n    <table class=\"table-bordered\" *ngIf=\"matrixData1\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-sm no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngFor=\"let matrix of matrixData1[floor.name]; let i = index\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', \r\n            'room-lg':  matrix['room-detail'].merge ==='xy', \r\n            'reserved': matrix.status === 'reserved', 'not-available': matrix.status === 'not-available', 'sold': matrix.status === 'sold'}\"\r\n            (click)=\"toggleReserve(matrix, floor.name, i)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n\r\n  <div class=\"col-5 table-responsive buildingB pl-0\">\r\n    <table class=\"table-bordered\" *ngIf=\"matrixData2\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-sm no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngIf=\"floor.floor > 24\" colspan=\"6\" class=\"no-border\"></td>\r\n          <td *ngFor=\"let matrix of matrixData2[floor.name]; let i = index\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', \r\n            'room-lg':  matrix['room-detail'].merge ==='xy', \r\n            'reserved': matrix.status === 'reserved', 'not-available': matrix.status === 'not-available', 'sold': matrix.status === 'sold'}\"\r\n            (click)=\"toggleReserve(matrix, floor.name, i)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n<<<<<<< HEAD\r\n  <div class=\"col-2 table-responsive totalInfo\">\r\n    <table class=\"total\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Total</label></td>\r\n          <td class=\"mc-6\"><label>{{total}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Available</label></td>\r\n          <td class=\"mc-6\"><label>{{availableTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Reserved</label></td>\r\n          <td class=\"mc-6\"><label>{{reservedTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Sold</label></td>\r\n          <td class=\"mc-6\"><label>{{soldTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Not Available</label></td>\r\n          <td class=\"mc-6\"><label>{{notAvailableTotal}}</label></td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n  <ngbd-modal-config #modal (doAction)=\"doReserve()\"></ngbd-modal-config>\r\n</div>\r\n=======\r\n</div>\r\n\r\n<ngbd-modal-config #modal (doAction)=\"doReserve($event)\"></ngbd-modal-config>\r\n>>>>>>> add log and check permission\r\n"
+module.exports = "<h1 class=\"display-1\">main works!</h1>\r\n<a href=\"/admin\">Admin</a>\r\n<button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">Logout</button>\r\n\r\n<div class=\"row ml-0 mr-0\">\r\n  <div class=\"col-5 table-responsive pl-0\">\r\n    <table class=\"table-bordered\" *ngIf=\"matrixData1\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-sm no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngFor=\"let matrix of matrixData1[floor.name]; let i = index\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', \r\n            'room-lg':  matrix['room-detail'].merge ==='xy', \r\n            'reserved': matrix.status === 'reserved', 'not-available': matrix.status === 'not-available', 'sold': matrix.status === 'sold'}\"\r\n            (click)=\"toggleReserve(matrix, floor.name, i)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n\r\n  <div class=\"col-5 table-responsive pl-0\">\r\n    <table class=\"table-bordered\" *ngIf=\"matrixData2\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-sm no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngIf=\"floor.floor > 24\" colspan=\"6\" class=\"no-border\"></td>\r\n          <td *ngFor=\"let matrix of matrixData2[floor.name]; let i = index\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', \r\n            'room-lg':  matrix['room-detail'].merge ==='xy', \r\n            'reserved': matrix.status === 'reserved', 'not-available': matrix.status === 'not-available', 'sold': matrix.status === 'sold'}\"\r\n            (click)=\"toggleReserve(matrix, floor.name, i)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n  <div class=\"col-2 table-responsive\">\r\n    <div class=\"logo\">\r\n      <img src=\"../../assets/img/logo.png\">\r\n    </div>\r\n    <div class=\"diagram\">\r\n      <img src=\"../../assets/img/metrix.png\">\r\n    </div>\r\n    <div class=\"totalInfo\">\r\n      <table class=\"total\">\r\n        <tbody>\r\n          <tr>\r\n            <td class=\"mc-6 bold\"><label>Total</label></td>\r\n            <td class=\"mc-6 sum bold\"><label>{{total}}</label></td>\r\n          </tr>\r\n          <tr>\r\n            <td class=\"mc-6\"><label>Available</label></td>\r\n            <td class=\"mc-6 sum\"><label>{{availableTotal}}</label></td>\r\n          </tr>\r\n          <tr>\r\n            <td class=\"mc-6\"><label>Reserved</label></td>\r\n            <td class=\"mc-6 sum\"><label>{{reservedTotal}}</label></td>\r\n          </tr>\r\n          <tr>\r\n            <td class=\"mc-6\"><label>Sold</label></td>\r\n            <td class=\"mc-6 sum\"><label>{{soldTotal}}</label></td>\r\n          </tr>\r\n          <tr>\r\n            <td class=\"mc-6\"><label>Not Available</label></td>\r\n            <td class=\"mc-6 sum\"><label>{{notAvailableTotal}}</label></td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</div>\r\n<ngbd-modal-config #modal (doAction)=\"doReserve($event)\"></ngbd-modal-config>\r\n"
 
 /***/ }),
 
@@ -1294,7 +1296,8 @@ var MainComponent = /** @class */ (function () {
         this.userModel = {
             uid: '',
             username: '',
-            permission: 0
+            permission: 0,
+            group: ''
         };
         this.total = 0;
         this.availableTotal = 0;
@@ -1310,16 +1313,12 @@ var MainComponent = /** @class */ (function () {
         var _this = this;
         this.userService.getCurrentUser().then(function (res1) {
             _this.userModel.uid = res1.uid;
-            _this.userService.getUserName(res1.uid)
+            _this.userService.getUserDetail(res1.uid)
                 .then(function (res) {
-                _this.userModel.username = res;
-            }, function (err) {
-                console.log(err);
-            });
-            _this.userService.getPermission(res1.uid)
-                .then(function (res2) {
-                _this.userModel.permission = res2;
-                console.log(res2);
+                _this.userModel.permission = res.permission;
+                _this.userModel.username = res.name;
+                _this.userModel.group = res.group;
+                console.log(res);
             }, function (err2) {
                 console.log(err2);
             });
@@ -1370,17 +1369,24 @@ var MainComponent = /** @class */ (function () {
         }
         this.room = room;
         this.floor = floor;
-        if (this.userModel.permission > 2 && roomdata.status === 'reserved') {
-            this.openModal("Cancel Reserve?", 'prompt', 'available');
+        //checkPermission
+        if (roomdata.status === 'available' && this.userModel.permission > 1) {
+            this.openModal("Reserve?", 'prompt', roomdata.status);
         }
-        else if (this.userModel.permission <= 2 && roomdata.status === 'reserved') {
-            this.openModal("Can't cancel reserve.", 'error', '');
-        }
-        else if (this.userModel.permission > 1 && roomdata.status === 'available') {
-            this.openModal("Reserve?", 'prompt', 'reserved');
-        }
-        else if (this.userModel.permission <= 1 && roomdata.status === 'available') {
+        else if (roomdata.status === 'available' && this.userModel.permission <= 1) {
             this.openModal("Can't reserve.", 'error', '');
+        }
+        else if (roomdata.status === 'reserved' && this.userModel.permission > 2) {
+            this.openModal("Sold or cancel reserve?", 'prompt', roomdata.status);
+        }
+        else if (roomdata.status === 'reserved' && this.userModel.permission <= 2) {
+            this.openModal("Can't sold or cancel reserve.", 'error', '');
+        }
+        else if (roomdata.status === 'sold' && this.userModel.permission > 3) {
+            this.openModal("Cancel sold?", 'prompt', roomdata.status);
+        }
+        else if (roomdata.status === 'sold' && this.userModel.permission <= 3) {
+            this.openModal("Can't cancel sold.", 'error', '');
         }
     };
     MainComponent.prototype.doReserve = function (action) {
@@ -1648,7 +1654,7 @@ module.exports = ".close:not(:disabled):not(.disabled):focus,\r\n.close:not(:dis
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ng-template #error let-c=\"close\" let-d=\"dismiss\">\r\n  <div class=\"modal-body text-center\">\r\n    <h1>{{message}}</h1>\r\n  </div>\r\n  <div class=\"modal-footer\" style=\"margin:auto; border: none\">\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"d()\">Close</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #prompt let-c=\"close\" let-d=\"dismiss\">\r\n  <!-- <div class=\"modal-header\">\r\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Hi there!</h4>\r\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div> -->\r\n  <div class=\"modal-body text-center\">\r\n    <h1>{{message}}</h1>\r\n  </div>\r\n  <div class=\"modal-footer\" style=\"margin:auto; border: none\">\r\n    <button type=\"button\" class=\"btn btn-success\" (click)=\"confirm()\">Confirm</button>\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"d()\">Close</button>\r\n  </div>\r\n</ng-template>\r\n"
+module.exports = "<ng-template #error let-c=\"close\" let-d=\"dismiss\">\r\n  <div class=\"modal-body text-center\">\r\n    <h1>{{message}}</h1>\r\n  </div>\r\n  <div class=\"modal-footer\" style=\"margin:auto; border: none;\">\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"d()\">Close</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #prompt let-c=\"close\" let-d=\"dismiss\">\r\n  <div class=\"modal-header\" style=\"border: none;\">\r\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body text-center\">\r\n    <h1>{{message}}</h1>\r\n  </div>\r\n  <div class=\"modal-footer\" style=\"margin:auto; border: none;\">\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"confirm()\" *ngIf=\"action === 'available'\">Reserve</button>\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"confirm()\" *ngIf=\"action === 'reserved'\">Sold</button>\r\n    <button type=\"button\" class=\"btn btn-danger\" (click)=\"cancel()\" *ngIf=\"action === 'reserved'\">Cancel reserved</button>\r\n    <button type=\"button\" class=\"btn btn-danger\" (click)=\"cancel()\" *ngIf=\"action === 'sold'\">Cancel sold</button>\r\n  </div>\r\n</ng-template>\r\n"
 
 /***/ }),
 
@@ -1694,7 +1700,21 @@ var NgbdModalConfig = /** @class */ (function () {
         }
     };
     NgbdModalConfig.prototype.confirm = function () {
-        this.doAction.emit(this.action);
+        if (this.action === 'available') {
+            this.doAction.emit('reserved');
+        }
+        else if (this.action === 'reserved') {
+            this.doAction.emit('sold');
+        }
+        this.modalService.dismissAll();
+    };
+    NgbdModalConfig.prototype.cancel = function () {
+        if (this.action === 'reserved') {
+            this.doAction.emit('available');
+        }
+        else if (this.action === 'sold') {
+            this.doAction.emit('reserved');
+        }
         this.modalService.dismissAll();
     };
     __decorate([
