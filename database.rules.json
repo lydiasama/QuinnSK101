@@ -24,7 +24,7 @@
       || ((newData.child('group').val() === 'viewer') && (newData.child('permission').val() === 1))
       || ((newData.child('group').val() === 'sale') && (newData.child('permission').val() === 2))
       || ((newData.child('group').val() === 'sale-lead') && (newData.child('permission').val() === 3))
-      || ((newData.child('group').val() === 'admin') && (newData.child('permission').val() === 3)) )"
+      || ((newData.child('group').val() === 'admin') && (newData.child('permission').val() === 4)) )"
     },
     "login-log": {
       ".read": "root.child('users').child(auth.uid).child('group').val() === 'admin'",
