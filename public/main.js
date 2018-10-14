@@ -818,6 +818,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angularfire2_database__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angularfire2_database__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/index.cjs.js");
 /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_5__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -827,6 +829,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -843,14 +846,39 @@ var MatrixService = /** @class */ (function () {
     MatrixService.prototype.getAllData = function () {
         return this.matrixData;
     };
-    MatrixService.prototype.reserve = function (building, floor, room) {
+    MatrixService.prototype.reserve = function (building, floor, room, action, userModel) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             firebase_app__WEBPACK_IMPORTED_MODULE_4__["database"]().ref(_this.dbPath + '/' + building + '/' + floor + '/' + room + '/').update({
-                status: 'reserved'
+                status: action
             }).then(function (res) {
                 resolve(res);
-            }, function (err) { return reject(err); });
+                _this.logMatrix(action, userModel.permission, userModel.username, userModel.uid);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    MatrixService.prototype.generateTime = function () {
+        var keyTime = moment__WEBPACK_IMPORTED_MODULE_5__().format('YYMMDD-hhmmss');
+        return "QN" + keyTime;
+    };
+    MatrixService.prototype.logMatrix = function (action, permission, username, uid) {
+        var _this = this;
+        console.log(action, permission, username, uid);
+        return new Promise(function (resolve, reject) {
+            var ref = firebase_app__WEBPACK_IMPORTED_MODULE_4__["database"]().ref('matrix-log/' + _this.generateTime());
+            ref.set({
+                action: action,
+                created_date: moment__WEBPACK_IMPORTED_MODULE_5__().format('YYYY-MM-DD'),
+                group: permission,
+                name: username,
+                uid: uid
+            }).then(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
         });
     };
     MatrixService = __decorate([
@@ -952,6 +980,17 @@ var UserService = /** @class */ (function () {
             });
         });
     };
+    UserService.prototype.getPermission = function (uid) {
+        return new Promise(function (resolve, reject) {
+            var user = firebase_app__WEBPACK_IMPORTED_MODULE_4__["database"]().ref('users/' + uid);
+            user.once('value').then(function (res) {
+                var permission = res.child('permission').val();
+                resolve(permission);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     UserService.prototype.getUserUid = function () {
         return firebase_app__WEBPACK_IMPORTED_MODULE_4__["auth"]().currentUser.uid;
     };
@@ -1049,6 +1088,7 @@ var LoginComponent = /** @class */ (function () {
     LoginComponent.prototype.prepareLogUser = function () {
         var _this = this;
         var uid = this.userService.getUserUid();
+        console.log(uid);
         this.userService.getUserName(uid)
             .then(function (res) {
             _this.tryLogUser(uid, res);
@@ -1089,7 +1129,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 60px\r\n}\r\n\r\n.room-md {\r\n  width: 110px;\r\n  height: 60px;\r\n  padding: 10px;\r\n}\r\n\r\n.room-lg {\r\n  width: 220px;\r\n  height: 120px;\r\n  padding: 10px;\r\n}\r\n\r\n.no-border {\r\n  border: 0px;\r\n}\r\n\r\n.reserved {\r\n  background-color: #ffc107;\r\n}\r\n\r\n.sold {\r\n  background-color: red;\r\n  color: white;\r\n}\r\n\r\n.not-available {\r\n  background-color: black;\r\n  color: white;\r\n}"
+module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 60px;\r\n  cursor: pointer;\r\n}\r\n\r\n.room-md {\r\n  width: 110px;\r\n  height: 60px;\r\n  padding: 10px;\r\n  cursor: pointer;\r\n}\r\n\r\n.room-lg {\r\n  width: 220px;\r\n  height: 120px;\r\n  padding: 10px;\r\n  cursor: pointer;\r\n}\r\n\r\n.no-border {\r\n  border: 0px;\r\n  cursor: default;\r\n}\r\n\r\n.reserved {\r\n  background-color: #ffc107;\r\n}\r\n\r\n.sold {\r\n  background-color: red;\r\n  color: white;\r\n}\r\n\r\n.not-available {\r\n  background-color: black;\r\n  color: white;\r\n}\r\n\r\n.total {\r\n  background-color: rgb(201, 196, 193);\r\n  border: 20px solid rgb(201, 196, 193);\r\n}"
 
 /***/ }),
 
@@ -1100,7 +1140,7 @@ module.exports = ".room-sm {\r\n  width: 70px;\r\n  height: 60px\r\n}\r\n\r\n.ro
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"display-1\">main works!</h1>\r\n<a href=\"/admin\">Admin</a>\r\n<button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">Logout</button>\r\n\r\n<div class=\"row ml-0 mr-0\">\r\n  <div class=\"col-5 table-responsive buildingA\">\r\n    <table class=\"table-bordered\" *ngIf=\"matrixData1\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-sm no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngFor=\"let matrix of matrixData1[floor.name]; let i = index\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', \r\n            'room-lg':  matrix['room-detail'].merge ==='xy', \r\n            'reserved': matrix.status === 'reserved', 'not-available': matrix.status === 'not-available', 'sold': matrix.status === 'sold'}\"\r\n            (click)=\"toggleReserve(matrix, floor.name, i)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n\r\n  <div class=\"col-5 table-responsive buildingB\">\r\n    <table class=\"table-bordered\" *ngIf=\"matrixData2\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-sm no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngIf=\"floor.floor > 24\" colspan=\"6\" class=\"no-border\"></td>\r\n          <td *ngFor=\"let matrix of matrixData2[floor.name]; let i = index\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', \r\n            'room-lg':  matrix['room-detail'].merge ==='xy', \r\n            'reserved': matrix.status === 'reserved', 'not-available': matrix.status === 'not-available', 'sold': matrix.status === 'sold'}\"\r\n            (click)=\"toggleReserve(matrix, floor.name, i)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n  <div class=\"col-2 table-responsive totalInfo\">\r\n    <table class=\"total table-responsive\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Total</label></td>\r\n          <td class=\"mc-6\"><label>{{total}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Available</label></td>\r\n          <td class=\"mc-6\"><label>{{availableTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Reserved</label></td>\r\n          <td class=\"mc-6\"><label>{{reservedTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Sold</label></td>\r\n          <td class=\"mc-6\"><label>{{soldTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Not Available</label></td>\r\n          <td class=\"mc-6\"><label>{{notAvailableTotal}}</label></td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n  <ngbd-modal-config #modal (doAction)=\"doReserve()\"></ngbd-modal-config>\r\n</div>"
+module.exports = "<h1 class=\"display-1\">main works!</h1>\r\n<a href=\"/admin\">Admin</a>\r\n<button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">Logout</button>\r\n\r\n<div class=\"row ml-0 mr-0\">\r\n  <div class=\"col-5 table-responsive buildingA pl-0\">\r\n    <table class=\"table-bordered\" *ngIf=\"matrixData1\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-sm no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngFor=\"let matrix of matrixData1[floor.name]; let i = index\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', \r\n            'room-lg':  matrix['room-detail'].merge ==='xy', \r\n            'reserved': matrix.status === 'reserved', 'not-available': matrix.status === 'not-available', 'sold': matrix.status === 'sold'}\"\r\n            (click)=\"toggleReserve(matrix, floor.name, i)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n\r\n  <div class=\"col-5 table-responsive buildingB pl-0\">\r\n    <table class=\"table-bordered\" *ngIf=\"matrixData2\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"room-sm no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n          <td class=\"room-md no-border\"></td>\r\n        </tr>\r\n        <tr *ngFor=\"let floor of buildA\">\r\n          <td *ngIf=\"floor.floor > 24\" colspan=\"6\" class=\"no-border\"></td>\r\n          <td *ngFor=\"let matrix of matrixData2[floor.name]; let i = index\" [attr.colspan]=\"calColspan(matrix['room-detail'].merge)\"\r\n            class=\"text-center\" [ngClass]=\"{'room-md': matrix['room-detail'].merge !=='xy', \r\n            'room-lg':  matrix['room-detail'].merge ==='xy', \r\n            'reserved': matrix.status === 'reserved', 'not-available': matrix.status === 'not-available', 'sold': matrix.status === 'sold'}\"\r\n            (click)=\"toggleReserve(matrix, floor.name, i)\">\r\n            {{matrix['room-detail'].room}}<br />\r\n            {{matrix['room-detail'].space | number:'0.2-2'}} m2\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n<<<<<<< HEAD\r\n  <div class=\"col-2 table-responsive totalInfo\">\r\n    <table class=\"total\">\r\n      <tbody>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Total</label></td>\r\n          <td class=\"mc-6\"><label>{{total}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Available</label></td>\r\n          <td class=\"mc-6\"><label>{{availableTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Reserved</label></td>\r\n          <td class=\"mc-6\"><label>{{reservedTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Sold</label></td>\r\n          <td class=\"mc-6\"><label>{{soldTotal}}</label></td>\r\n        </tr>\r\n        <tr>\r\n          <td class=\"mc-6\"><label class=\"bold\">Not Available</label></td>\r\n          <td class=\"mc-6\"><label>{{notAvailableTotal}}</label></td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n  <ngbd-modal-config #modal (doAction)=\"doReserve()\"></ngbd-modal-config>\r\n</div>\r\n=======\r\n</div>\r\n\r\n<ngbd-modal-config #modal (doAction)=\"doReserve($event)\"></ngbd-modal-config>\r\n>>>>>>> add log and check permission\r\n"
 
 /***/ }),
 
@@ -1119,6 +1159,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _core_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/auth.service */ "./src/app/core/auth.service.ts");
 /* harmony import */ var _core_matrix_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../core/matrix.service */ "./src/app/core/matrix.service.ts");
+/* harmony import */ var _core_user_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../core/user.service */ "./src/app/core/user.service.ts");
 var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -1141,10 +1182,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var MainComponent = /** @class */ (function () {
-    function MainComponent(authService, matrixService, location) {
+    function MainComponent(authService, matrixService, userService, location) {
         this.authService = authService;
         this.matrixService = matrixService;
+        this.userService = userService;
         this.location = location;
         this.buildA = [
             {
@@ -1248,6 +1291,11 @@ var MainComponent = /** @class */ (function () {
                 floor: 7
             },
         ];
+        this.userModel = {
+            uid: '',
+            username: '',
+            permission: 0
+        };
         this.total = 0;
         this.availableTotal = 0;
         this.reservedTotal = 0;
@@ -1255,7 +1303,29 @@ var MainComponent = /** @class */ (function () {
         this.notAvailableTotal = 0;
     }
     MainComponent.prototype.ngOnInit = function () {
+        this.getUser();
         this.getData();
+    };
+    MainComponent.prototype.getUser = function () {
+        var _this = this;
+        this.userService.getCurrentUser().then(function (res1) {
+            _this.userModel.uid = res1.uid;
+            _this.userService.getUserName(res1.uid)
+                .then(function (res) {
+                _this.userModel.username = res;
+            }, function (err) {
+                console.log(err);
+            });
+            _this.userService.getPermission(res1.uid)
+                .then(function (res2) {
+                _this.userModel.permission = res2;
+                console.log(res2);
+            }, function (err2) {
+                console.log(err2);
+            });
+        }, function (err1) {
+            console.log(err1);
+        });
     };
     MainComponent.prototype.getData = function () {
         var _this = this;
@@ -1300,16 +1370,24 @@ var MainComponent = /** @class */ (function () {
         }
         this.room = room;
         this.floor = floor;
-        if (roomdata.status === 'available') {
+        if (this.userModel.permission > 2 && roomdata.status === 'reserved') {
+            this.openModal("Cancel Reserve?", 'prompt', 'available');
+        }
+        else if (this.userModel.permission <= 2 && roomdata.status === 'reserved') {
+            this.openModal("Can't cancel reserve.", 'error', '');
+        }
+        else if (this.userModel.permission > 1 && roomdata.status === 'available') {
             this.openModal("Reserve?", 'prompt', 'reserved');
         }
-        else {
+        else if (this.userModel.permission <= 1 && roomdata.status === 'available') {
             this.openModal("Can't reserve.", 'error', '');
         }
     };
-    MainComponent.prototype.doReserve = function () {
-        this.matrixService.reserve(this.building, this.room, this.floor).then(function (res) {
-            console.log(res);
+    MainComponent.prototype.doReserve = function (action) {
+        console.log(action);
+        this.matrixService.reserve(this.building, this.room, this.floor, action, this.userModel)
+            .then(function (res) {
+            console.log('success');
         }, function (err) {
             console.log(err);
         });
@@ -1357,6 +1435,7 @@ var MainComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [_core_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"],
             _core_matrix_service__WEBPACK_IMPORTED_MODULE_4__["MatrixService"],
+            _core_user_service__WEBPACK_IMPORTED_MODULE_5__["UserService"],
             _angular_common__WEBPACK_IMPORTED_MODULE_1__["Location"]])
     ], MainComponent);
     return MainComponent;
@@ -1615,10 +1694,8 @@ var NgbdModalConfig = /** @class */ (function () {
         }
     };
     NgbdModalConfig.prototype.confirm = function () {
-        if (this.action === 'reserved') {
-            this.doAction.emit(true);
-            this.modalService.dismissAll();
-        }
+        this.doAction.emit(this.action);
+        this.modalService.dismissAll();
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('error'),
