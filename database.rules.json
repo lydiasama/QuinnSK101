@@ -1,7 +1,7 @@
 {
   "rules": {
     "building": {
-      ".read": true,
+      ".read": "(auth.uid != null) && root.child('users').child(auth.uid).child('permission').val() > 0",
       ".write": "auth.uid != null"
     },
     "matrix-log": {
@@ -14,7 +14,7 @@
     },
     "users": {
       ".read": "auth.uid != null",
-      ".write": true
+      ".write": "auth.uid != null"
     },
     "login-log": {
       ".read": "root.child('users').child(auth.uid).child('group').val() === 'admin'",
