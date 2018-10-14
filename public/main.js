@@ -1264,6 +1264,7 @@ var MainComponent = /** @class */ (function () {
         })).subscribe(function (res) {
             _this.matrixData1 = res[0];
             _this.matrixData2 = res[1];
+            _this.clearSummary();
             _this.getTotalSummary();
         });
     };
@@ -1336,11 +1337,13 @@ var MainComponent = /** @class */ (function () {
                 }
             });
         });
-        console.log("total : " + this.total);
-        console.log("available : " + this.availableTotal);
-        console.log("reserved : " + this.reservedTotal);
-        console.log("sold : " + this.soldTotal);
-        console.log("notavailable : " + this.notAvailableTotal);
+    };
+    MainComponent.prototype.clearSummary = function () {
+        this.total = 0;
+        this.reservedTotal = 0;
+        this.soldTotal = 0;
+        this.availableTotal = 0;
+        this.notAvailableTotal = 0;
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('modal'),
