@@ -10,15 +10,34 @@
       ".indexOn": ["uid", "name"],
       "created_date": {
         ".validate": "newData.isString() && newData.val().matches(/^(20)[0-9][0-9][-\\/.](0[1-9]|1[012])[-\\/.](0[1-9]|[12][0-9]|3[01])$/)"
-      }
+      },
+      ".validate": "newData.hasChildren(['action','created_date', 'group', 'name', 'uid']) 
+      && ( (newData.child('action').val() === 'available') 
+      || (newData.child('action').val() === 'not-available') 
+      || (newData.child('action').val() === 'sold') 
+      || (newData.child('action').val() === 'reserved') )
+      && ( (newData.child('group').val() === 'viewer')
+      || (newData.child('group').val() === 'sale')
+      || (newData.child('group').val() === 'sale-lead')
+      || (newData.child('group').val() === 'admin') )"
     },
     "users": {
       ".read": "auth.uid != null",
-      ".write": true
+      ".write": true,
+      ".validate": "newData.hasChildren(['group','name', 'permission']) 
+      && newData.child('permission').isNumber() 
+      && (newData.child('permission').val() >= 0) 
+      && (newData.child('permission').val() <= 4)
+      && ( ((newData.child('group').val() === 'anonymous') && (newData.child('permission').val() === 0))
+      || ((newData.child('group').val() === 'viewer') && (newData.child('permission').val() === 1))
+      || ((newData.child('group').val() === 'sale') && (newData.child('permission').val() === 2))
+      || ((newData.child('group').val() === 'sale-lead') && (newData.child('permission').val() === 3))
+      || ((newData.child('group').val() === 'admin') && (newData.child('permission').val() === 4)) )"
     },
     "login-log": {
       ".read": "root.child('users').child(auth.uid).child('group').val() === 'admin'",
       ".write": "auth.uid != null",
+      ".validate": "newData.hasChildren(['created_date', 'name', 'uid'])",
       ".indexOn": ["uid", "name"],
       "created_date": {
         ".validate": "newData.isString() && newData.val().matches(/^(20)[0-9][0-9][-\\/.](0[1-9]|1[012])[-\\/.](0[1-9]|[12][0-9]|3[01])$/)"
