@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/* You can add global styles to this file, and also import other style files */\r\n.error {\r\n  color: red;\r\n}\r\n.success {\r\n  color: green;\r\n}\r\n"
+module.exports = "/* You can add global styles to this file, and also import other style files */\r\n.error {\r\n  color: red;\r\n}\r\n.success {\r\n  color: green;\r\n}\r\n.footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  width: 100%;\r\n  height: 40px;\r\n  line-height: 40px;\r\n  background-color: #382F2D;\r\n}\r\n"
 
 /***/ }),
 
