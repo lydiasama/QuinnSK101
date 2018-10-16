@@ -368,8 +368,6 @@ var AdminComponent = /** @class */ (function () {
         this.userUid = '';
         this.nameDropdown = "Name";
         this.groupDropdown = "Group";
-        this.adminName = '';
-        this.userName = '';
         this.createForm();
     }
     AdminComponent.prototype.ngOnInit = function () {
@@ -468,38 +466,30 @@ var AdminComponent = /** @class */ (function () {
         this.setPermissionErrorMessage = '';
         this.setPermissionSuccessMessage = '';
     };
-    AdminComponent.prototype.prepareAdminName = function (adminUid) {
+    AdminComponent.prototype.tryLogSetPermission = function (userUid, group) {
+        var adminUid = this.userService.getUserUid();
+        this.prepareAdminName(adminUid, userUid, group);
+    };
+    AdminComponent.prototype.prepareAdminName = function (adminUid, userUid, group) {
         var _this = this;
         this.userService.getUserName(adminUid)
             .then(function (res) {
-            console.log(res);
-            _this.adminName = res;
-            return res;
+            _this.prepareUserName(userUid, group, res);
         }, function (err) {
             console.log(err);
         });
     };
-    AdminComponent.prototype.prepareUserName = function (userUid) {
+    AdminComponent.prototype.prepareUserName = function (userUid, group, adminName) {
         var _this = this;
         this.userService.getUserName(userUid)
             .then(function (res) {
-            console.log(res);
-            _this.userName = res;
-            return res;
+            _this.logPermission(adminName, group, res, userUid);
         }, function (err) {
             console.log(err);
         });
     };
-    AdminComponent.prototype.tryLogSetPermission = function (uid, group) {
-        var adminUid = this.userService.getUserUid();
-        var adminName = this.prepareAdminName(adminUid);
-        var userName = this.prepareUserName(uid);
-        console.log("uid : " + uid);
-        console.log("group : " + group);
-        console.log("adminUid : " + adminUid);
-        console.log("adminName : " + this.adminName);
-        console.log("userName : " + this.userName);
-        this.userService.logSetPermission(this.adminName, group, this.userName, uid)
+    AdminComponent.prototype.logPermission = function (adminName, group, userName, uid) {
+        this.userService.logSetPermission(adminName, group, userName, uid)
             .then(function (res) {
             console.log("Log Set Permission Success");
         }, function (err) {
@@ -665,21 +655,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var angularfire2_database__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! angularfire2/database */ "./node_modules/angularfire2/database/index.js");
 /* harmony import */ var angularfire2_database__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(angularfire2_database__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
-/* harmony import */ var _register_register_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./register/register.component */ "./src/app/register/register.component.ts");
-/* harmony import */ var _admin_admin_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./admin/admin.component */ "./src/app/admin/admin.component.ts");
-/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
-/* harmony import */ var _page_not_found_page_not_found_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./page-not-found/page-not-found.component */ "./src/app/page-not-found/page-not-found.component.ts");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _main_main_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./main/main.component */ "./src/app/main/main.component.ts");
-/* harmony import */ var _core_auth_guard__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./core/auth.guard */ "./src/app/core/auth.guard.ts");
-/* harmony import */ var _core_core_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./core/core.service */ "./src/app/core/core.service.ts");
-/* harmony import */ var _core_auth_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./core/auth.service */ "./src/app/core/auth.service.ts");
-/* harmony import */ var _core_user_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./core/user.service */ "./src/app/core/user.service.ts");
-/* harmony import */ var _core_matrix_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./core/matrix.service */ "./src/app/core/matrix.service.ts");
-/* harmony import */ var _shared_modal_modal_config__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./shared/modal/modal-config */ "./src/app/shared/modal/modal-config.ts");
-/* harmony import */ var _forgot_password_forgot_password_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./forgot-password/forgot-password.component */ "./src/app/forgot-password/forgot-password.component.ts");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
+/* harmony import */ var _register_register_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./register/register.component */ "./src/app/register/register.component.ts");
+/* harmony import */ var _admin_admin_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./admin/admin.component */ "./src/app/admin/admin.component.ts");
+/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
+/* harmony import */ var _page_not_found_page_not_found_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./page-not-found/page-not-found.component */ "./src/app/page-not-found/page-not-found.component.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _main_main_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./main/main.component */ "./src/app/main/main.component.ts");
+/* harmony import */ var _core_auth_guard__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./core/auth.guard */ "./src/app/core/auth.guard.ts");
+/* harmony import */ var _core_core_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./core/core.service */ "./src/app/core/core.service.ts");
+/* harmony import */ var _core_auth_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./core/auth.service */ "./src/app/core/auth.service.ts");
+/* harmony import */ var _core_user_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./core/user.service */ "./src/app/core/user.service.ts");
+/* harmony import */ var _core_matrix_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./core/matrix.service */ "./src/app/core/matrix.service.ts");
+/* harmony import */ var _shared_modal_modal_config__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./shared/modal/modal-config */ "./src/app/shared/modal/modal-config.ts");
+/* harmony import */ var _forgot_password_forgot_password_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./forgot-password/forgot-password.component */ "./src/app/forgot-password/forgot-password.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -709,33 +700,41 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_8__["AppComponent"],
-                _login_login_component__WEBPACK_IMPORTED_MODULE_9__["LoginComponent"],
-                _register_register_component__WEBPACK_IMPORTED_MODULE_10__["RegisterComponent"],
-                _admin_admin_component__WEBPACK_IMPORTED_MODULE_11__["AdminComponent"],
-                _page_not_found_page_not_found_component__WEBPACK_IMPORTED_MODULE_13__["PageNotFoundComponent"],
-                _main_main_component__WEBPACK_IMPORTED_MODULE_15__["MainComponent"],
-                _shared_modal_modal_config__WEBPACK_IMPORTED_MODULE_21__["NgbdModalConfig"],
-                _forgot_password_forgot_password_component__WEBPACK_IMPORTED_MODULE_22__["ForgotPasswordComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"],
+                _login_login_component__WEBPACK_IMPORTED_MODULE_10__["LoginComponent"],
+                _register_register_component__WEBPACK_IMPORTED_MODULE_11__["RegisterComponent"],
+                _admin_admin_component__WEBPACK_IMPORTED_MODULE_12__["AdminComponent"],
+                _page_not_found_page_not_found_component__WEBPACK_IMPORTED_MODULE_14__["PageNotFoundComponent"],
+                _main_main_component__WEBPACK_IMPORTED_MODULE_16__["MainComponent"],
+                _shared_modal_modal_config__WEBPACK_IMPORTED_MODULE_22__["NgbdModalConfig"],
+                _forgot_password_forgot_password_component__WEBPACK_IMPORTED_MODULE_23__["ForgotPasswordComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-                _app_routing_module__WEBPACK_IMPORTED_MODULE_12__["AppRoutingModule"],
+                _app_routing_module__WEBPACK_IMPORTED_MODULE_13__["AppRoutingModule"],
                 _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"],
-                angularfire2__WEBPACK_IMPORTED_MODULE_4__["AngularFireModule"].initializeApp(_environments_environment__WEBPACK_IMPORTED_MODULE_14__["environment"].firebase),
+                angularfire2__WEBPACK_IMPORTED_MODULE_4__["AngularFireModule"].initializeApp(_environments_environment__WEBPACK_IMPORTED_MODULE_15__["environment"].firebase),
                 angularfire2_auth__WEBPACK_IMPORTED_MODULE_5__["AngularFireAuthModule"],
                 angularfire2_firestore__WEBPACK_IMPORTED_MODULE_6__["AngularFirestoreModule"],
                 angularfire2_database__WEBPACK_IMPORTED_MODULE_7__["AngularFireDatabaseModule"]
             ],
-            providers: [_core_core_service__WEBPACK_IMPORTED_MODULE_17__["CoreService"], _core_auth_service__WEBPACK_IMPORTED_MODULE_18__["AuthService"], _core_user_service__WEBPACK_IMPORTED_MODULE_19__["UserService"], _core_auth_guard__WEBPACK_IMPORTED_MODULE_16__["AuthGuard"], _core_matrix_service__WEBPACK_IMPORTED_MODULE_20__["MatrixService"]],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_8__["AppComponent"]]
+            providers: [
+                _core_core_service__WEBPACK_IMPORTED_MODULE_18__["CoreService"],
+                _core_auth_service__WEBPACK_IMPORTED_MODULE_19__["AuthService"],
+                _core_user_service__WEBPACK_IMPORTED_MODULE_20__["UserService"],
+                _core_auth_guard__WEBPACK_IMPORTED_MODULE_17__["AuthGuard"],
+                _core_matrix_service__WEBPACK_IMPORTED_MODULE_21__["MatrixService"],
+                ngx_cookie_service__WEBPACK_IMPORTED_MODULE_8__["CookieService"]
+            ],
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -822,7 +821,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _core_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./core.service */ "./src/app/core/core.service.ts");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
+/* harmony import */ var _core_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./core.service */ "./src/app/core/core.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -838,10 +838,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var AuthService = /** @class */ (function () {
-    function AuthService(afAuth, coreService) {
+    function AuthService(afAuth, coreService, cookieService) {
         this.afAuth = afAuth;
         this.coreService = coreService;
+        this.cookieService = cookieService;
     }
     AuthService.prototype.doFacebookLogin = function () {
         var _this = this;
@@ -936,10 +938,20 @@ var AuthService = /** @class */ (function () {
                 .catch(function (error) { return reject(error); });
         });
     };
+    AuthService.prototype.setRememberme = function (email) {
+        this.cookieService.set('remember', email);
+    };
+    AuthService.prototype.getRememberme = function () {
+        return this.cookieService.get('remember');
+    };
+    AuthService.prototype.removeRememberme = function () {
+        this.cookieService.delete('remember');
+    };
     AuthService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [angularfire2_auth__WEBPACK_IMPORTED_MODULE_2__["AngularFireAuth"],
-            _core_service__WEBPACK_IMPORTED_MODULE_5__["CoreService"]])
+            _core_service__WEBPACK_IMPORTED_MODULE_6__["CoreService"],
+            ngx_cookie_service__WEBPACK_IMPORTED_MODULE_5__["CookieService"]])
     ], AuthService);
     return AuthService;
 }());
@@ -1431,7 +1443,7 @@ module.exports = ".login-page {\r\n  background-image: url('bg-quinn.jpg');\r\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"login-page background-tint\">\r\n  <div class=\"padding-login\">\r\n    <div class=\"row mt-5 ml-0 mr-0\">\r\n      <div class=\"col-lg-6 maxsize\">\r\n        <div class=\"card\">\r\n          <h2 class=\"text-center mt-4\">Login</h2>\r\n          <h5 class=\"text-center\">Please login to proceed.</h5>\r\n          <div class=\"card-body\">\r\n            <form [formGroup]=\"loginForm\">\r\n              <div class=\"form-group\">\r\n                <input type=\"email\" formControlName=\"email\" class=\"form-control form-control-lg\" placeholder=\"Your Email\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <input type=\"password\" formControlName=\"password\" class=\"form-control form-control-lg\" placeholder=\"Your Password\">\r\n                <label class=\"error\">{{errorMessage}}</label>\r\n              </div>\r\n              <div class=\"form-group form-check text-center\">\r\n                <label class=\"custom-checkbox\" for=\"remember\">Remember me\r\n                  <input type=\"checkbox\" id=\"remember\">\r\n                  <span class=\"checkmark\"></span>\r\n                </label>\r\n              </div>\r\n              <button type=\"submit\" (click)=\"tryLogin(loginForm.value)\" class=\"btn btn-lg btn-block\">\r\n                <h4>Login</h4>\r\n              </button>\r\n            </form>\r\n            <div class=\"row mt-4 ml-0 mr-0\">\r\n              <div class=\"col-12 text-center\">\r\n                <p><a href [routerLink]=\"['/forgotpass']\">Forgot password</a></p>\r\n                <p>No account yet? <a href=\"/register\">Create an account</a></p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"login-page background-tint\">\r\n  <div class=\"padding-login\">\r\n    <div class=\"row mt-5 ml-0 mr-0\">\r\n      <div class=\"col-lg-6 maxsize\">\r\n        <div class=\"card\">\r\n          <h2 class=\"text-center mt-4\">Login</h2>\r\n          <h5 class=\"text-center\">Please login to proceed.</h5>\r\n          <div class=\"card-body\">\r\n            <form [formGroup]=\"loginForm\">\r\n              <div class=\"form-group\">\r\n                <input type=\"email\" formControlName=\"email\" class=\"form-control form-control-lg\" placeholder=\"Your Email\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <input type=\"password\" formControlName=\"password\" class=\"form-control form-control-lg\" placeholder=\"Your Password\">\r\n                <label class=\"error\">{{errorMessage}}</label>\r\n              </div>\r\n              <div class=\"form-group form-check text-center\">\r\n                <label class=\"custom-checkbox\" for=\"remember\">Remember me\r\n                  <input type=\"checkbox\" id=\"remember\" formControlName=\"rememberme\">\r\n                  <span class=\"checkmark\"></span>\r\n                </label>\r\n              </div>\r\n              <button type=\"submit\" (click)=\"tryLogin(loginForm.value)\" class=\"btn btn-lg btn-block\">\r\n                <h4>Login</h4>\r\n              </button>\r\n            </form>\r\n            <div class=\"row mt-4 ml-0 mr-0\">\r\n              <div class=\"col-12 text-center\">\r\n                <p><a href [routerLink]=\"['/forgotpass']\">Forgot password</a></p>\r\n                <!-- <p>No account yet? <a href=\"/register\">Create an account</a></p> -->\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1473,15 +1485,22 @@ var LoginComponent = /** @class */ (function () {
         this.coreService = coreService;
         this.router = router;
         this.fb = fb;
-        this.createForm();
+        var rememberEmail = this.authService.getRememberme();
+        if (!!rememberEmail) {
+            this.createForm(rememberEmail, true);
+        }
+        else {
+            this.createForm('', false);
+        }
     }
     LoginComponent.prototype.ngOnInit = function () {
         this.coreService.generateTime();
     };
-    LoginComponent.prototype.createForm = function () {
+    LoginComponent.prototype.createForm = function (email, rememberme) {
         this.loginForm = this.fb.group({
-            email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-            password: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]
+            email: [email, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            password: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            rememberme: [rememberme]
         });
     };
     LoginComponent.prototype.tryLogin = function (value) {
@@ -1489,6 +1508,7 @@ var LoginComponent = /** @class */ (function () {
         this.authService.doLogin(value)
             .then(function (res) {
             _this.prepareLogUser();
+            _this.toggleRememberme(value);
             _this.router.navigate(['/main']);
         }, function (err) {
             console.log(err);
@@ -1512,6 +1532,14 @@ var LoginComponent = /** @class */ (function () {
         }, function (err) {
             console.log(err);
         });
+    };
+    LoginComponent.prototype.toggleRememberme = function (value) {
+        if (value.rememberme) {
+            this.authService.setRememberme(value.email);
+        }
+        else {
+            this.authService.removeRememberme();
+        }
     };
     LoginComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
